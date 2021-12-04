@@ -15,7 +15,7 @@ async function* pathsGenerator(input: Deno.Reader) {
     }
 }
 
-export async function getPositionAndDepth(course: AsyncIterable<Path>) {
+async function getPositionAndDepth(course: AsyncIterable<Path>) {
     let position = 0
     let depth = 0
     for await (const { direction, units } of course) {
@@ -30,7 +30,7 @@ export async function getPositionAndDepth(course: AsyncIterable<Path>) {
     return position * depth
 }
 
-export async function getPositionAndDepthWithAim(course: AsyncIterable<Path>) {
+async function getPositionAndDepthWithAim(course: AsyncIterable<Path>) {
     let position = 0
     let depth = 0
     let aim = 0
@@ -47,11 +47,18 @@ export async function getPositionAndDepthWithAim(course: AsyncIterable<Path>) {
     return position * depth
 }
 
-export async function run(input: Deno.Reader) {
+interface RunOptions {
+    withAim?: boolean
+}
+
+export async function run(input: Deno.Reader, options?: RunOptions) {
+    const { 
+        withAim = false
+    } = options ?? {}
+
     const course = pathsGenerator(input)
-    // Part One:
-    // const result = await getPositionAndDepth(course)
-    // Part Two:
-    const result = await getPositionAndDepthWithAim(course)
+    const result = await (withAim ? getPositionAndDepthWithAim(course) : getPositionAndDepth(course))
+
     console.log(result)
+    return result
 }
