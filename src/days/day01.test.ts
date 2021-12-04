@@ -1,20 +1,27 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts"
-import { getDepthIncreases } from "./day01.ts"
+import { Buffer } from "https://deno.land/std@0.116.0/io/buffer.ts"
+import { run } from "./day01.ts"
 
-async function* inputGenerator(nums: number[]) {
-    for (const num of nums) {
-        yield num
-    }
-}
+const INPUT = `199
+200
+208
+210
+200
+207
+240
+269
+260
+263
+`
 
-Deno.test("getDepthIncreases - window 1", async () => {
-    const input = inputGenerator([199, 200, 208, 210, 200, 207, 240, 269, 260, 263])
-    const result = await getDepthIncreases(input, 1)
+Deno.test("run - window 1", async () => {
+    const input = new Buffer(new TextEncoder().encode(INPUT))
+    const result = await run(input)
     assertEquals(7, result)
 })
 
-Deno.test("getDepthIncreases - window 3", async () => {
-    const input = inputGenerator([199, 200, 208, 210, 200, 207, 240, 269, 260, 263])
-    const result = await getDepthIncreases(input, 3)
+Deno.test("run - window 3", async () => {
+    const input = new Buffer(new TextEncoder().encode(INPUT))
+    const result = await run(input, { windowSize: 3 })
     assertEquals(5, result)
 })

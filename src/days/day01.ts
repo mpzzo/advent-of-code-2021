@@ -28,11 +28,16 @@ async function* depthsGenerator(input: Deno.Reader) {
     }
 }
 
-export async function run(input: Deno.Reader) {
-    const depths = depthsGenerator(input)
-    // Part One:
-    // const result = await getDepthIncreases(depths)
-    // Part Two:
-    const result = await getDepthIncreases(depths, 3)
+interface RunOptions {
+    windowSize?: number
+}
+
+export async function run(input: Deno.Reader, options?: RunOptions) {
+    const {
+        windowSize = 1
+    } = options ?? {}
+
+    const result = await getDepthIncreases(depthsGenerator(input), windowSize)
     console.log(result)
+    return result
 }
