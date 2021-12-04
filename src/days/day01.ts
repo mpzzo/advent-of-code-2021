@@ -1,6 +1,6 @@
 import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
 
-export async function getDepthIncreases(depths: AsyncIterable<number>, windowSize = 1): Promise<number> {
+async function getDepthIncreases(depths: AsyncIterable<number>, windowSize: number): Promise<number> {
     if (windowSize < 1) {
         return 0
     }
