@@ -1,8 +1,8 @@
 import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
 
-export async function getPowerConsumption(input: AsyncIterable<string>) {
+function getPowerConsumption(values: string[]) {
     const bitCount: [number, number][] = []
-    for await (const bits of input) {
+    for (const bits of values) {
         bits.split('').forEach((bit, i) => {
             const counts = bitCount[i] ?? [0, 0]
             if (bit === '0') {
@@ -39,27 +39,26 @@ function getRatingFromValues(values: string[], filter: RatingBucketFilter): stri
     return remainder[0]
 }
 
-export async function getLifeSupportRating(input: AsyncIterable<string>) {
-    const values: string[] = []
-    for await (const value of input) {
-        values.push(value)
-    }
+function getLifeSupportRating(values: string[]) {
     const oxygenRating   = getRatingFromValues(values, (b) => b[0].length <= b[1].length ? b[1] : b[0])
     const scrubberRating = getRatingFromValues(values, (b) => b[0].length >  b[1].length ? b[1] : b[0])
     return Number.parseInt(oxygenRating, 2) * Number.parseInt(scrubberRating, 2)
 }
 
-async function* inputGenerator(input: Deno.Reader) {
+async function parseInput(input: Deno.Reader) {
+    const values: string[] = []
     for await (const l of readLines(input)) {
-        yield l
+        values.push(l)
     }
+    return values
 }
 
 export async function run(input: Deno.Reader) {
-    const course = inputGenerator(input)
-    // Part One:
-    // const result = await getPowerConsumption(course)
-    // Part Two:
-    const result = await getLifeSupportRating(course)
+    const values = await parseInput(input)
+    const result = { 
+        powerConsumption: getPowerConsumption(values),
+        lifeSupportRating: getLifeSupportRating(values)
+    }
     console.log(result)
+    return result
 }
