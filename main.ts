@@ -1,17 +1,12 @@
 import { parse } from "https://deno.land/std@0.116.0/flags/mod.ts"
 import runners from "./src/runners.ts"
 
-const {
-    _,
-    ...options
-} = parse(Deno.args)
+const [command, ...args] = Deno.args
+const runner = runners[Number.parseInt(command) - 1]
 
-for (const key of _) {
-    const runner = runners[key]
-    if (!runner) {
-        console.error("Runner not found:", key)
-    } else {
-        console.info("Running", key)
-        console.info(await runner(Deno.stdin, options))
-    }
+if (!runner) {
+    console.error("Runner not found for day", command)
+} else {
+    console.info("Running day", command)
+    console.info(await runner(Deno.stdin, parse(args)))
 }
