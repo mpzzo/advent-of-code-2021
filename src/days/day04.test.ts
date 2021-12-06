@@ -23,8 +23,14 @@ const INPUT = `7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3
  2  0 12  3  7
 `
 
-Deno.test("run", async () => {
+Deno.test("run - first winner score", async () => {
     const input = new Buffer(new TextEncoder().encode(INPUT))
     const result = await run(input)
     assertEquals(result, 4512)
+})
+
+Deno.test("run - last winner score", async () => {
+    const input = new Buffer(new TextEncoder().encode(INPUT))
+    const result = await run(input, { firstWinner: false })
+    assertEquals(result, 1924)
 })

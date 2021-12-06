@@ -80,36 +80,55 @@ interface SimulationResult {
 class BingoSimulator {
     constructor (private readonly run: BingoRun) {}
 
-    simulate(): SimulationResult {
-        const cards = this.run.boards.map((board) => new BingoCard(board))
+    simulate(firstWinner = true): SimulationResult {
+        let result: SimulationResult = {
+            winner: null,
+            lastCalled: this.run.moves[this.run.moves.length - 1]
+        }
+
+        let cards = this.run.boards.map((board) => new BingoCard(board))
         for (const num of this.run.moves) {
-            for (const card of cards) {
+            const winningCards = new Array(cards.length).fill(false)
+            cards.forEach((card, c) => {
                 const position = card.find(num)
                 if (!position) {
-                    continue
+                    return
                 }
 
                 const [y, x] = position
                 card.mark(y, x)
                 if (card.checkWin(y, x)) {
-                    return {
+                    winningCards[c] = true
+                    result = {
                         winner: card,
                         lastCalled: num
                     }
                 }
+            })
+            cards = cards.filter((_, c) => !winningCards[c])
+            if (firstWinner && result.winner !== null) {
+                return result
             }
         }
-        return {
-            winner: null,
-            lastCalled: this.run.moves[this.run.moves.length - 1]
-        }
+
+        return result
     }
 }
 
 
-export async function run(input: Deno.Reader) {
+interface RunOptions {
+    firstWinner?: boolean
+}
+
+export async function run(input: Deno.Reader, options?: RunOptions) {
+    const {
+        firstWinner = true
+    } = options ?? {}
+
+    console.log(firstWinner, options)
+    
     const bingo = await parseInput(input)
-    const simulation = new BingoSimulator(bingo).simulate()
+    const simulation = new BingoSimulator(bingo).simulate(firstWinner)
     const result = simulation.winner ? simulation.winner.getFinalScore(simulation.lastCalled) : -1
     return result
 }
