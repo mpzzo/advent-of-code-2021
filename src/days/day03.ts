@@ -19,10 +19,10 @@ function getPowerConsumption(values: string[]) {
     return Number.parseInt(gamma, 2) * Number.parseInt(epsilon, 2)
 }
 
-type RatingBucket = [string[], string[]]
-type RatingBucketFilter = (b: RatingBucket) => string[]
+type RatingBucket = string[]
+type RatingBucketFilter = (b: [RatingBucket, RatingBucket]) => RatingBucket
 
-function getRatingFromValues(values: string[], filter: RatingBucketFilter): string {
+function getRatingFromValues(values: RatingBucket, filter: RatingBucketFilter): string {
     let remainder = values
     for (let i = 0; remainder.length > 1 && i < remainder[0].length; i++) {
         const buckets = remainder.reduce((carry, value) => {
@@ -32,7 +32,7 @@ function getRatingFromValues(values: string[], filter: RatingBucketFilter): stri
                 carry[1].push(value)
             }
             return carry
-        }, [[], []] as RatingBucket)
+        }, [[], []] as [RatingBucket, RatingBucket])
 
         remainder = filter(buckets)
     }
