@@ -38,6 +38,5 @@ export async function run(input: Deno.Reader, options?: RunOptions) {
     } = options ?? {}
 
     const result = await getDepthIncreases(depthsGenerator(input), windowSize)
-    console.log(result)
     return result
 }

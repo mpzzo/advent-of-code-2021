@@ -12,6 +12,6 @@ for (const key of _) {
         console.error("Runner not found:", key)
     } else {
         console.info("Running", key)
-        runner(Deno.stdin, options)
+        console.info(await runner(Deno.stdin, options))
     }
 }

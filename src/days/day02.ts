@@ -58,7 +58,5 @@ export async function run(input: Deno.Reader, options?: RunOptions) {
 
     const course = pathsGenerator(input)
     const result = await (withAim ? getPositionAndDepthWithAim(course) : getPositionAndDepth(course))
-
-    console.log(result)
     return result
 }

@@ -59,6 +59,5 @@ export async function run(input: Deno.Reader) {
         powerConsumption: getPowerConsumption(values),
         lifeSupportRating: getLifeSupportRating(values)
     }
-    console.log(result)
     return result
 }

@@ -111,6 +111,5 @@ export async function run(input: Deno.Reader) {
     const bingo = await parseInput(input)
     const simulation = new BingoSimulator(bingo).simulate()
     const result = simulation.winner ? simulation.winner.getFinalScore(simulation.lastCalled) : -1
-    console.log(result)
     return result
 }
