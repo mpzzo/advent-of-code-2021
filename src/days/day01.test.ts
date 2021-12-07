@@ -1,6 +1,7 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts"
 import { Buffer } from "https://deno.land/std@0.116.0/io/buffer.ts"
 import { run } from "./day01.ts"
+import { createInputFromString, parseArgs } from "../input.ts"
 
 const INPUT = `199
 200
@@ -15,13 +16,15 @@ const INPUT = `199
 `
 
 Deno.test("run - window 1", async () => {
-    const input = new Buffer(new TextEncoder().encode(INPUT))
-    const result = await run(input)
+    const input = createInputFromString(INPUT)
+    const options = parseArgs([])
+    const result = await run(input, options)
     assertEquals(7, result)
 })
 
 Deno.test("run - window 3", async () => {
-    const input = new Buffer(new TextEncoder().encode(INPUT))
-    const result = await run(input, { windowSize: 3 })
+    const input = createInputFromString(INPUT)
+    const options = parseArgs(['-w', '3'])
+    const result = await run(input, options)
     assertEquals(5, result)
 })

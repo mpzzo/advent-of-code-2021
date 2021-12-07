@@ -1,4 +1,4 @@
-import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
+import { Input, OptionSelector } from "../input.ts"
 
 async function getDepthIncreases(depths: AsyncIterable<number>, windowSize: number): Promise<number> {
     if (windowSize < 1) {
@@ -22,21 +22,7 @@ async function getDepthIncreases(depths: AsyncIterable<number>, windowSize: numb
     return count
 }
 
-async function* depthsGenerator(input: Deno.Reader) {
-    for await (const l of readLines(input)) {
-        yield Number.parseInt(l)
-    }
-}
-
-interface RunOptions {
-    windowSize?: number
-}
-
-export async function run(input: Deno.Reader, options?: RunOptions) {
-    const {
-        windowSize = 1
-    } = options ?? {}
-
-    const result = await getDepthIncreases(depthsGenerator(input), windowSize)
-    return result
+export async function run (input: Input, options: OptionSelector) {
+    const windowSize = options.number(['w', 'windowSize'], 1)
+    return await getDepthIncreases(input.map(s => Number.parseInt(s)), windowSize)
 }
