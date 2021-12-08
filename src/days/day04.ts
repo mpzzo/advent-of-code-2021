@@ -115,11 +115,6 @@ class BingoSimulator {
     }
 }
 
-
-interface RunOptions {
-    firstWinner?: boolean
-}
-
 export async function run(input: Input, options: OptionSelector) {
     const lastWinner = options.boolean(['l', 'lastWinner'], false)    
     const bingo = await parseInput(input)
