@@ -18,12 +18,12 @@ Deno.test("run - window 1 (default)", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs()
     const result = await run(input, options)
-    assertEquals(7, result)
+    assertEquals(result, 7)
 })
 
 Deno.test("run - window 3", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs(['-w', '3'])
     const result = await run(input, options)
-    assertEquals(5, result)
+    assertEquals(result, 5)
 })

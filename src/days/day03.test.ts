@@ -20,6 +20,6 @@ Deno.test("run", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs()
     const {powerConsumption, lifeSupportRating} = await run(input, options)
-    assertEquals(198, powerConsumption)
-    assertEquals(230, lifeSupportRating)
+    assertEquals(powerConsumption, 198)
+    assertEquals(lifeSupportRating, 230)
 })
