@@ -19,7 +19,7 @@ Deno.test("run - without aim (default)", async () => {
 
 Deno.test("run - with aim", async () => {
     const input = createInputFromString(INPUT)
-    const options = parseArgs(['w'])
+    const options = parseArgs(['-w'])
     const result = await run(input, options)
-    assertEquals(150, result)
+    assertEquals(900, result)
 })
