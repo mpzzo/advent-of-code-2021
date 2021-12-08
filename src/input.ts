@@ -13,14 +13,22 @@ export class Input {
         return this.map((s: string) => s)
     }
 
+    readLines() {
+        return readLines(this.reader)
+    }
+
     async* map<T>(mapper: (s: string) => T) {
         for await (const l of this.readLines()) {
             yield mapper(l)
         }
     }
 
-    readLines() {
-        return readLines(this.reader)
+    async toArray() {
+        const a = []
+        for await (const l of this.readLines()) {
+            a.push(l)
+        }
+        return a
     }
 }
 

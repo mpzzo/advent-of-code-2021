@@ -1,5 +1,5 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts"
-import { Buffer } from "https://deno.land/std@0.116.0/io/buffer.ts"
+import { createInputFromString, parseArgs } from "../input.ts"
 import { run } from "./day03.ts"
 
 const INPUT = `00100
@@ -17,8 +17,9 @@ const INPUT = `00100
 `
 
 Deno.test("run", async () => {
-    const input = new Buffer(new TextEncoder().encode(INPUT))
-    const {powerConsumption, lifeSupportRating} = await run(input)
+    const input = createInputFromString(INPUT)
+    const options = parseArgs()
+    const {powerConsumption, lifeSupportRating} = await run(input, options)
     assertEquals(198, powerConsumption)
     assertEquals(230, lifeSupportRating)
 })

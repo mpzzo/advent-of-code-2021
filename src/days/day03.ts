@@ -1,4 +1,4 @@
-import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
+import { Input, OptionSelector } from "../input.ts"
 
 function getPowerConsumption(values: string[]) {
     const bitCount: [number, number][] = []
@@ -45,19 +45,10 @@ function getLifeSupportRating(values: string[]) {
     return Number.parseInt(oxygenRating, 2) * Number.parseInt(scrubberRating, 2)
 }
 
-async function parseInput(input: Deno.Reader) {
-    const values: string[] = []
-    for await (const l of readLines(input)) {
-        values.push(l)
-    }
-    return values
-}
-
-export async function run(input: Deno.Reader) {
-    const values = await parseInput(input)
-    const result = { 
+export async function run(input: Input, _: OptionSelector) {
+    const values = await input.toArray()
+    return { 
         powerConsumption: getPowerConsumption(values),
         lifeSupportRating: getLifeSupportRating(values)
     }
-    return result
 }
