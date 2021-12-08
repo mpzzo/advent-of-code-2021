@@ -1,4 +1,4 @@
-import { parse } from "https://deno.land/std@0.116.0/flags/mod.ts"
+import { Input, parseArgs } from "./src/input.ts"
 import runners from "./src/runners.ts"
 
 const [command, ...args] = Deno.args
@@ -8,5 +8,8 @@ if (!runner) {
     console.error("Runner not found for day", command)
 } else {
     console.info("Running day", command)
-    console.info(await runner(Deno.stdin, parse(args)))
+    console.info(await runner(
+        new Input(Deno.stdin),
+        parseArgs(args)
+    ))
 }
