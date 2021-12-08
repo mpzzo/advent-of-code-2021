@@ -1,5 +1,4 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts"
-import { Buffer } from "https://deno.land/std@0.116.0/io/buffer.ts"
 import { run } from "./day01.ts"
 import { createInputFromString, parseArgs } from "../input.ts"
 
@@ -15,9 +14,9 @@ const INPUT = `199
 263
 `
 
-Deno.test("run - window 1", async () => {
+Deno.test("run - window 1 (default)", async () => {
     const input = createInputFromString(INPUT)
-    const options = parseArgs([])
+    const options = parseArgs()
     const result = await run(input, options)
     assertEquals(7, result)
 })

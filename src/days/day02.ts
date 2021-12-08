@@ -1,18 +1,8 @@
-import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
+import { Input, OptionSelector } from "../input.ts"
 
 type Path = {
     direction: string,
     units: number
-}
-
-async function* pathsGenerator(input: Deno.Reader) {
-    for await (const l of readLines(input)) {
-        const [ direction, units ] = l.split(' ')
-        yield { 
-            direction,
-            units: Number.parseInt(units)
-        }
-    }
 }
 
 async function getPositionAndDepth(course: AsyncIterable<Path>) {
@@ -47,16 +37,15 @@ async function getPositionAndDepthWithAim(course: AsyncIterable<Path>) {
     return position * depth
 }
 
-interface RunOptions {
-    withAim?: boolean
-}
-
-export async function run(input: Deno.Reader, options?: RunOptions) {
-    const { 
-        withAim = false
-    } = options ?? {}
-
-    const course = pathsGenerator(input)
+export async function run (input: Input, options: OptionSelector) {
+    const withAim = options.boolean(['w', 'withAim'], false)
+    const course = input.map((l) => {
+        const [ direction, units ] = l.split(' ')
+        return { 
+            direction,
+            units: Number.parseInt(units)
+        }
+    })
     const result = await (withAim ? getPositionAndDepthWithAim(course) : getPositionAndDepth(course))
     return result
 }

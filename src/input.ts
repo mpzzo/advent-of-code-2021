@@ -55,7 +55,7 @@ export function createInputFromString(s: string): Input {
     return new Input(reader)
 }
 
-export function parseArgs(args: string[]) {
+export function parseArgs(args: string[] = []) {
     const a = parse(args)
     return new OptionSelector(a)
 }

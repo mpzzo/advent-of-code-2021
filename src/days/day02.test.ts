@@ -1,6 +1,6 @@
 import { assertEquals } from "https://deno.land/std@0.116.0/testing/asserts.ts"
-import { Buffer } from "https://deno.land/std@0.116.0/io/buffer.ts"
 import { run } from "./day02.ts"
+import { createInputFromString, parseArgs } from "../input.ts"
 
 const INPUT = `forward 5
 down 5
@@ -10,14 +10,16 @@ down 8
 forward 2
 `
 
-Deno.test("getPositionAndDepth", async () => {
-    const input = new Buffer(new TextEncoder().encode(INPUT))
-    const result = await run(input)
+Deno.test("run - without aim (default)", async () => {
+    const input = createInputFromString(INPUT)
+    const options = parseArgs()
+    const result = await run(input, options)
     assertEquals(150, result)
 })
 
-Deno.test("getPositionAndDepthWithAim", async () => {
-    const input = new Buffer(new TextEncoder().encode(INPUT))
-    const result = await run(input, { withAim: true })
-    assertEquals(900, result)
+Deno.test("run - with aim", async () => {
+    const input = createInputFromString(INPUT)
+    const options = parseArgs(['w'])
+    const result = await run(input, options)
+    assertEquals(150, result)
 })
