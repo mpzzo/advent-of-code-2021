@@ -1,12 +1,12 @@
-import { readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
+import { Input, OptionSelector } from "../input.ts"
 
 interface BingoRun {
     moves: number[],
     boards: number[][][]
 }
 
-async function parseInput(input: Deno.Reader): Promise<BingoRun> {
-    const iter = readLines(input)
+async function parseInput(input: Input): Promise<BingoRun> {
+    const iter = input.readLines()
     let curr = await iter.next()
 
     let moves: number[] = []
@@ -80,7 +80,7 @@ interface SimulationResult {
 class BingoSimulator {
     constructor (private readonly run: BingoRun) {}
 
-    simulate(firstWinner = true): SimulationResult {
+    simulate(lastWinner = false): SimulationResult {
         let result: SimulationResult = {
             winner: null,
             lastCalled: this.run.moves[this.run.moves.length - 1]
@@ -106,7 +106,7 @@ class BingoSimulator {
                 }
             })
             cards = cards.filter((_, c) => !winningCards[c])
-            if (firstWinner && result.winner !== null) {
+            if (!lastWinner && result.winner !== null) {
                 return result
             }
         }
@@ -120,15 +120,10 @@ interface RunOptions {
     firstWinner?: boolean
 }
 
-export async function run(input: Deno.Reader, options?: RunOptions) {
-    const {
-        firstWinner = true
-    } = options ?? {}
-
-    console.log(firstWinner, options)
-    
+export async function run(input: Input, options: OptionSelector) {
+    const lastWinner = options.boolean(['l', 'lastWinner'], false)    
     const bingo = await parseInput(input)
-    const simulation = new BingoSimulator(bingo).simulate(firstWinner)
+    const simulation = new BingoSimulator(bingo).simulate(lastWinner)
     const result = simulation.winner ? simulation.winner.getFinalScore(simulation.lastCalled) : -1
     return result
 }

@@ -36,7 +36,7 @@ export class OptionSelector {
     constructor(private readonly args: Args) {}
 
     string(keys: string[], defaultValue: string) {
-        return this.select(keys, defaultValue, (a) => new String(a))
+        return this.select(keys, defaultValue, (a) => new String(a).valueOf())
     }
 
     number(keys: string[], defaultValue: number) {
@@ -44,7 +44,7 @@ export class OptionSelector {
     }
     
     boolean(keys: string[], defaultValue: boolean) {
-        return this.select(keys, defaultValue, (a) => new Boolean(a))
+        return this.select(keys, defaultValue, (a) => new Boolean(a).valueOf())
     }
 
     select<T>(keys: string[], defaultValue: T, transform: OptionTransform<T>): T {
