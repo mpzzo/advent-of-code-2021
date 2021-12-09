@@ -1,8 +1,13 @@
 import { Input, OptionSelector } from "../input.ts"
+
 interface Coordinates { x: number, y: number }
 interface LineSegment { start: Coordinates, end: Coordinates }
 
-function map(s: string): LineSegment {
+function isDiagonal(s: LineSegment) {
+    return Math.abs(s.end.x - s.start.x) === Math.abs(s.end.y - s.start.y)
+}
+
+function parseSegments(s: string): LineSegment {
     const [ start, end ] = s.split(' -> ').map((c: string): Coordinates => {
         const [x, y] = c.split(',').map(num => Number.parseInt(num))
         return { x, y }
@@ -10,33 +15,42 @@ function map(s: string): LineSegment {
     return { start, end }
 }
 
-function getLineCoordinates(segment: LineSegment): Coordinates[] {
-    const line = []
-    if (segment.start.x === segment.end.x) {
-        const x = segment.start.x
-        const start = Math.min(segment.start.y, segment.end.y)
-        const end   = Math.max(segment.start.y, segment.end.y)
-        for (let y = start; y <= end; y++) {
-            line.push({x, y})
-        }
-    } else if (segment.start.y === segment.end.y) {
-        const y = segment.start.y
-        const start = Math.min(segment.start.x, segment.end.x)
-        const end   = Math.max(segment.start.x, segment.end.x)
-        for (let x = start; x <= end; x++) {
-            line.push({x, y})
+function getLineCoordinates(s: LineSegment): Coordinates[] {
+    if (s.start.x !== s.end.x && s.start.y !== s.end.y && !isDiagonal(s)) {
+        return []
+    }
+    
+    const line: Coordinates[] = []
+    const vector = {
+        x: Math.sign(s.end.x - s.start.x),
+        y: Math.sign(s.end.y - s.start.y)
+    }
+
+    let done = false
+    let current = s.start
+    while (!done) {
+        line.push(current)
+        if (current.x === s.end.x && current.y === s.end.y) {
+            done = true
+        } else {
+            current = { x: current.x + vector.x, y: current.y + vector.y }
         }
     }
+
     return line
 }
 
-export async function run(input: Input, _: OptionSelector) {
+export async function run(input: Input, options: OptionSelector) {
+    const includeDiagonals = options.boolean(['d', 'includeDiagonals'], false)
     const segments = (await input.toArray())
-        .map((s: string) => map(s))
-        .filter((s: LineSegment) => s.start.x === s.end.x || s.start.y === s.end.y)
+        .map((s: string) => parseSegments(s))
+        .filter((s: LineSegment) => s.start.x === s.end.x 
+            || s.start.y === s.end.y
+            || (includeDiagonals && isDiagonal(s))
+        )
 
-    const width  = segments.reduce((length, segment) => Math.max(length, segment.start.x, segment.end.x), 0) + 1
-    const height = segments.reduce((length, segment) => Math.max(length, segment.start.y, segment.end.y), 0) + 1
+    const width  = segments.reduce((length, s) => Math.max(length, s.start.x, s.end.x), 0) + 1
+    const height = segments.reduce((length, s) => Math.max(length, s.start.y, s.end.y), 0) + 1
 
     const diagram = new Array<number[]>(height)
     for (let y = 0; y < diagram.length; y++) {
@@ -45,7 +59,6 @@ export async function run(input: Input, _: OptionSelector) {
 
     for (const segment of segments) {
         const coordinates = getLineCoordinates(segment)
-        console.log(segment, coordinates)
         coordinates.forEach(({x, y}) => diagram[y][x] += 1) 
     }
 

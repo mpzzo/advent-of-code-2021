@@ -14,9 +14,16 @@ const INPUT = `0,9 -> 5,9
 5,5 -> 8,2
 `
 
-Deno.test("run", async () => {
+Deno.test("run - straight lines only (default)", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs()
     const result = await run(input, options)
     assertEquals(result, 5)
+})
+
+Deno.test("run - include diagonals", async () => {
+    const input = createInputFromString(INPUT)
+    const options = parseArgs(['-d'])
+    const result = await run(input, options)
+    assertEquals(result, 12)
 })
