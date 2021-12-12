@@ -12,6 +12,7 @@ const INPUT = `2199943210
 Deno.test("run", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs()
-    const result = await run(input, options)
-    assertEquals(result, 15)
+    const { riskLevel, largestBasins } = await run(input, options)
+    assertEquals(riskLevel, 15)
+    assertEquals(largestBasins, 1134)
 })
