@@ -1,4 +1,5 @@
 import { Input, OptionSelector } from "../input.ts"
+
 interface StepResult {
     nextLevels: number[][],
     flashCount: number
