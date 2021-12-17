@@ -15,7 +15,7 @@ Deno.test("run", async () => {
     const options = parseArgs()
     const result = await run(input, options)
     assertEquals(result, 0)
-})
+})\
 `
 
 const getRunFileContents = (inputPath = '../input.ts') => `\
@@ -23,7 +23,7 @@ import { Input, OptionSelector } from "${inputPath}"
 
 export async function run (input: Input, options: OptionSelector) {
     return await Promise.resolve(0)
-}
+}\
 `
 
 const getRunnersFileContents = (dayImports: string, dayRunners: string) => `\
@@ -34,7 +34,7 @@ ${dayImports}
 type Runner = (input: Input, options: OptionSelector) => any
 
 const runners: {[key: number]: Runner} = {${dayRunners}}
-export default runners
+export default runners\
 ` 
 
 async function buildRunnersFile(srcPath: string) {
