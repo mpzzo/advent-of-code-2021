@@ -11,6 +11,7 @@ import { run as day10 } from "./days/day10.ts"
 import { run as day11 } from "./days/day11.ts"
 import { run as day12 } from "./days/day12.ts"
 import { run as day13 } from "./days/day13.ts"
+import { run as day14 } from "./days/day14.ts"
 import { Input, OptionSelector } from "./input.ts"
 
 // deno-lint-ignore no-explicit-any
@@ -29,7 +30,8 @@ const runners: Runner[] = [
     day10,
     day11,
     day12,
-    day13
+    day13,
+    day14
 ]
 
 export default runners
