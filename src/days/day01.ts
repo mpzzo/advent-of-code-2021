@@ -22,7 +22,7 @@ async function getDepthIncreases(depths: AsyncIterable<number>, windowSize: numb
     return count
 }
 
-export async function run (input: Input, options: OptionSelector) {
+export async function run(input: Input, options: OptionSelector) {
     const windowSize = options.number(['w', 'windowSize'], 1)
     return await getDepthIncreases(input.map(s => Number.parseInt(s)), windowSize)
 }

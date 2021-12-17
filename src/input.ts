@@ -1,7 +1,7 @@
 import { Buffer, readLines } from "https://deno.land/std@0.116.0/io/mod.ts"
 import { Args, parse } from "https://deno.land/std@0.116.0/flags/mod.ts"
 
-  // deno-lint-ignore no-explicit-any
+// deno-lint-ignore no-explicit-any
 type OptionTransform<T> = (a: any) => T
 
 export class Input {
