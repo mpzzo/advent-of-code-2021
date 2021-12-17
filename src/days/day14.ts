@@ -12,12 +12,10 @@ export function getPolymerCounts(template: string, pairInsertions: Map<string, s
         const key = first + second
         const baseResult = { [second]: 1 }
         const remainingDepth = steps - depth
-
         if (!pairInsertions.has(key)) {
             // No polymer pair found in the insertion map, so return the base result.
             return baseResult
         }
-
         if (memo[key][remainingDepth] !== null) {
             // Already calculated from previous run.
             return memo[key][remainingDepth]
@@ -58,6 +56,16 @@ export function getPolymerCounts(template: string, pairInsertions: Map<string, s
     return counts
 }
 
+function getPolymerScore(counts: Map<string, number>): number {
+    let min = null
+    let max = null
+    for (const count of counts.values()) {
+        min = Math.min(min ?? count, count)
+        max = Math.max(max ?? count, count)
+    }
+    return max !== null && min !== null ? max - min : 0
+}
+
 export async function run(input: Input, options: OptionSelector) {
     const steps = options.number(['s', 'steps'], 10)
 
@@ -72,8 +80,5 @@ export async function run(input: Input, options: OptionSelector) {
     }
 
     const polymerCounts = getPolymerCounts(template, pairInsertions, steps)
-    const counts = Array.from(polymerCounts.values())
-    counts.sort((a, b) => a - b)
-
-    return counts.length > 2 ? counts[counts.length - 1] - counts[0] : 0
+    return getPolymerScore(polymerCounts)
 }
