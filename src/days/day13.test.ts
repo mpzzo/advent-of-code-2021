@@ -127,6 +127,23 @@ Deno.test("fold vertical with overhang", () => {
 Deno.test("run - single fold", async () => {
     const input = createInputFromString(INPUT)
     const options = parseArgs(['-f', '1'])
-    const result = await run(input, options)
-    assertEquals(result, 17)
+    const { dotCount } = await run(input, options)
+    assertEquals(dotCount, 17)
+})
+
+Deno.test("run - all folds (default)", async () => {
+    const input = createInputFromString(INPUT)
+    const options = parseArgs()
+    const { dotCount, output } = await run(input, options)
+    const expected = [
+        '#####',
+        '#...#',
+        '#...#',
+        '#...#',
+        '#####',
+        '.....',
+        '.....'
+    ]
+    assertEquals(dotCount, 16)
+    assertEquals(output, expected)
 })

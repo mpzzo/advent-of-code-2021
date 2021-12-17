@@ -74,6 +74,10 @@ export function fold(instruction: FoldInstruction, surface: Surface): Surface {
     }
 }
 
+function getOutput(s: Surface): string[] {
+    return s.map((row) => row.map(dot => dot ? '#' : '.').join(''))
+}
+
 export async function run(input: Input, options: OptionSelector) {
     const foldCount = options.number(['f', 'folds'], -1)
     const paper = (await input.toArray()).reduce((paper: Paper, line) => {
@@ -103,5 +107,6 @@ export async function run(input: Input, options: OptionSelector) {
     }
 
     const dotCount = surface.reduce((count, row) => count + row.filter(dot => dot).length, 0)
-    return dotCount
+    const output = getOutput(surface)
+    return { dotCount, output }
 }
