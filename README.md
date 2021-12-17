@@ -27,6 +27,16 @@ The flags are set up with long and short options. This should execute the same a
 cat input/1 | deno run main.ts 1 -w 3
 ```
 
+### Boilerplate
+
+Generating new day scripts can be done using the boilerplate script, simply by including the day number into the CLI arguments. Read and write must be allowed to generate the files. 
+
+For example, this will produce the necessary changes to include day 32:
+
+```
+deno run --allow-read --allow-write boilerplate.ts 32
+```
+
 ## Forthcoming
 *  Finish all the puzzles!
 *  Print help messages for each day and document the available flags
