@@ -21,7 +21,7 @@ Deno.test("run", async () => {
 const getRunFileContents = (inputPath = '../input.ts') => `\
 import { Input, OptionSelector } from "${inputPath}"
 
-export async function run (input: Input, options: OptionSelector) {
+export async function run(input: Input, options: OptionSelector) {
     return await Promise.resolve(0)
 }\
 `
