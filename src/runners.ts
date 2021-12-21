@@ -15,9 +15,10 @@ import { run as day13 } from "./days/day13.ts"
 import { run as day14 } from "./days/day14.ts"
 import { run as day15 } from "./days/day15.ts"
 import { run as day16 } from "./days/day16.ts"
+import { run as day17 } from "./days/day17.ts"
 
 // deno-lint-ignore no-explicit-any
 type Runner = (input: Input, options: OptionSelector) => any
 
-const runners: {[key: number]: Runner} = {1:day01,2:day02,3:day03,4:day04,5:day05,6:day06,7:day07,8:day08,9:day09,10:day10,11:day11,12:day12,13:day13,14:day14,15:day15,16:day16}
+const runners: {[key: number]: Runner} = {1:day01,2:day02,3:day03,4:day04,5:day05,6:day06,7:day07,8:day08,9:day09,10:day10,11:day11,12:day12,13:day13,14:day14,15:day15,16:day16,17:day17}
 export default runners
